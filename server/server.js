@@ -1,16 +1,24 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
-
+const authRoutes = require("./routes/authRoutes");
+const authMiddleware = require("./middleware/authMiddleware");
 const pool = require("./config/db");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "Sweety API is running!" });
+});
+app.get("/api/protected", authMiddleware, (req, res) => {
+  res.json({
+    message: "You accessed a protected route!",
+    userId: req.user.id,
+  });
 });
 
 app.get("/api/health", async (req, res) => {
