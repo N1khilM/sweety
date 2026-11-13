@@ -1,29 +1,38 @@
 # Sweety 🍬 – Blood Glucose Tracker
 
-A full-stack blood glucose tracking application built with React, Node.js, Express, and PostgreSQL.
+A full-stack blood glucose tracking application built with **React, Node.js, Express, and PostgreSQL**.
 
-Users can securely record daily glucose readings, manage their reading history, and view daily and monthly reports.
+Sweety helps users securely record daily blood glucose readings, manage their reading history, and monitor glucose trends through daily and monthly reports.
 
-## Features
+## 🚀 Live Demo
 
-- User registration and login with JWT authentication.
-- Secure password hashing using bcrypt.
-- Add, edit, and delete glucose readings.
-- Four reading slots per day:
+<https://sweety-glucose.vercel.app/>
+
+- **Frontend:** Vercel
+- **Backend API:** https://sweety-1xhc.onrender.com
+- **API Health Check:** https://sweety-1xhc.onrender.com/api/health
+- **Database:** PostgreSQL hosted on Neon
+
+## ✨ Features
+
+- User registration and login with JWT authentication
+- Secure password hashing using bcrypt
+- Add, edit, and delete glucose readings
+- Four predefined reading slots per day:
   - Morning (fasting)
   - After breakfast
   - After lunch
   - After dinner
-- Input validation (40–600 mg/dL).
-- Prevent duplicate readings for the same slot and date.
-- Prevent future-dated readings.
-- Daily glucose summary.
-- Month-to-date report.
-- Previous month's report.
-- User-specific reading access.
-- Responsive dashboard.
+- Glucose input validation (40–600 mg/dL)
+- Duplicate reading prevention for the same slot and date
+- Future-date validation
+- Daily glucose summary
+- Month-to-date report
+- Previous month's report
+- User-specific reading access
+- Responsive dashboard
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 **Frontend**
 
@@ -40,7 +49,13 @@ Users can securely record daily glucose readings, manage their reading history, 
 - JWT
 - bcryptjs
 
-## Project Structure
+**Database & Deployment**
+
+- PostgreSQL – Neon
+- Backend – Render
+- Frontend – Vercel
+
+## 📁 Project Structure
 
 ```text
 sweety/
@@ -50,28 +65,31 @@ sweety/
 │   └── package.json
 ├── server/
 │   ├── config/
+│   ├── database/
+│   │   └── schema.sql
 │   ├── middleware/
 │   ├── routes/
 │   ├── scripts/
 │   │   └── seed.js
 │   ├── .env.example
 │   └── package.json
+├── screenshots/
 ├── .gitignore
 └── README.md
 ```
 
-## Prerequisites
+## 📋 Prerequisites
 
 - Node.js (v18 or later)
 - PostgreSQL
 - npm
 
-## Installation
+## ⚙️ Installation & Setup
 
 ### 1. Clone the repository
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
+git clone https://github.com/N1khilM/sweety.git
 cd sweety
 ```
 
@@ -83,7 +101,11 @@ Create a PostgreSQL database:
 CREATE DATABASE sweety;
 ```
 
-Run the SQL schema to create the `users` and `readings` tables.
+Run the database schema from the project root:
+
+```bash
+psql -U postgres -d sweety -f server/database/schema.sql
+```
 
 ### 3. Configure the backend
 
@@ -92,7 +114,7 @@ cd server
 npm install
 ```
 
-Copy `.env.example` to `.env` and configure:
+Create a `.env` file using `.env.example`:
 
 ```env
 PORT=5000
@@ -102,79 +124,81 @@ JWT_SECRET=your_secure_random_secret
 
 ### 4. Configure the frontend
 
-Open another terminal:
+Open another terminal from the project root:
 
 ```bash
 cd client
 npm install
 ```
 
-Copy `.env.example` to `.env`:
+Create a `.env` file using `.env.example`:
 
 ```env
 VITE_API_URL=http://localhost:5000
 ```
 
-### 5. Seed demo data
+### 5. Seed demo data (Optional)
 
-From the server directory:
+To create a demo account and sample glucose readings, run from the server directory:
 
 ```bash
 npm run seed
 ```
 
-Demo credentials:
+**Demo credentials** (if the seed script has been executed):
 
-- Email: demo@sweety.com
-- Password: DemoPass123!
+- Email: `demo@sweety.com`
+- Password: `DemoPass123!`
 
 ### 6. Start the backend
 
+From the server directory:
+
 ```bash
-cd server
 npm run dev
 ```
+
+The backend will run at `http://localhost:5000`.
 
 ### 7. Start the frontend
 
-In another terminal:
+In another terminal, from the client directory:
 
 ```bash
-cd client
 npm run dev
 ```
 
-Open the Vite URL shown in your terminal (usually http://localhost:5173).
+Open the Vite development URL (usually `http://localhost:5173`).
 
-## API Endpoints
+## 🔌 API Endpoints
 
 ### Authentication
 
-| Method | Endpoint             | Description     |
-| ------ | -------------------- | --------------- |
-| POST   | `/api/auth/register` | Register a user |
-| POST   | `/api/auth/login`    | Login           |
+| Method | Endpoint             | Description         |
+| ------ | -------------------- | ------------------- |
+| POST   | `/api/auth/register` | Register a new user |
+| POST   | `/api/auth/login`    | Authenticate a user |
 
 ### Glucose Readings
 
-| Method | Endpoint            | Description         |
-| ------ | ------------------- | ------------------- |
-| GET    | `/api/readings`     | Get user's readings |
-| POST   | `/api/readings`     | Add a reading       |
-| PUT    | `/api/readings/:id` | Update a reading    |
-| DELETE | `/api/readings/:id` | Delete a reading    |
+| Method | Endpoint            | Description                           |
+| ------ | ------------------- | ------------------------------------- |
+| GET    | `/api/readings`     | Get the authenticated user's readings |
+| POST   | `/api/readings`     | Add a glucose reading                 |
+| PUT    | `/api/readings/:id` | Update a reading                      |
+| DELETE | `/api/readings/:id` | Delete a reading                      |
 
 ### Reports
 
-| Method | Endpoint                                     | Description          |
-| ------ | -------------------------------------------- | -------------------- |
-| GET    | `/api/reports/daily?date=YYYY-MM-DD`         | Daily report         |
-| GET    | `/api/reports/month-to-date?date=YYYY-MM-DD` | Month-to-date report |
-| GET    | `/api/reports/monthly?month=YYYY-MM`         | Monthly report       |
+| Method | Endpoint                                     | Description             |
+| ------ | -------------------------------------------- | ----------------------- |
+| GET    | `/api/reports/daily?date=YYYY-MM-DD`         | Daily report            |
+| GET    | `/api/reports/month-to-date?date=YYYY-MM-DD` | Month-to-date report    |
+| GET    | `/api/reports/monthly?month=YYYY-MM`         | Previous month's report |
 
 All reading and report endpoints require a valid JWT bearer token.
 
-## Validation Rules
+## ✅ Validation Rules
 
 - Glucose values must be integers between 40 and 600 mg/dL.
 - Only one reading is allowed per slot per day.
@@ -182,11 +206,25 @@ All reading and report endpoints require a valid JWT bearer token.
 - Future dates are not allowed.
 - Users can access only their own readings.
 
-## Notes & Assumptions
+## 📝 Notes & Assumptions
 
 - Each user has four predefined reading slots per day.
-- Monthly reports cover the complete previous calendar month.
+- Daily reports show readings for the selected date.
 - Month-to-date reports cover the first day of the selected month through the selected date.
-- Empty reports display a friendly empty state.
-- Demo data is provided through the seed script.
-- Authentication uses JWT-based protected API routes.
+- Monthly reports cover the complete previous calendar month.
+- Empty reports display an appropriate empty state.
+- Demo data can be generated using the optional seed script.
+- Authentication is handled using JWT-based protected API routes.
+- Environment variables are used for database credentials and authentication secrets.
+
+## 👨‍💻 Author
+
+**Nikhil Mugali**
+
+- GitHub: https://github.com/N1khilM
+- LinkedIn: https://www.linkedin.com/in/nikhilmugali/
+- Portfolio: https://nikhilmugali-portfolio.vercel.app/
+
+---
+
+Built with ❤️ using the PERN stack.
