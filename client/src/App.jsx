@@ -1,10 +1,17 @@
 import { useState } from "react";
 import AuthForm from "./components/AuthForm";
+import Dashboard from "./pages/Dashboard";
 import "./index.css";
 
 function App() {
   const [user, setUser] = useState(null);
   const [mode, setMode] = useState("login");
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setUser(null);
+    setMode("login");
+  };
 
   if (!user) {
     return (
@@ -23,7 +30,7 @@ function App() {
     );
   }
 
-  return <h1>Welcome, {user.name}!</h1>;
+  return <Dashboard user={user} onLogout={handleLogout} />;
 }
 
 export default App;
