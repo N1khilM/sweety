@@ -1,10 +1,26 @@
 import { useState, useEffect } from "react";
 import { apiRequest } from "../services/api";
+import ReadingForm from "../components/ReadingForm";
+import ReadingList from "../components/ReadingList";
+import Reports from "../components/Reports";
+
+const getLocalDate = () => {
+  const now = new Date();
+  const offset = now.getTimezoneOffset();
+
+  return new Date(now.getTime() - offset * 60000).toISOString().slice(0, 10);
+};
 
 const Dashboard = ({ user, onLogout }) => {
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split("T")[0],
-  );
+  const [selectedDate, setSelectedDate] = useState(getLocalDate);
+  const refreshReport = async () => {
+    try {
+      const data = await apiRequest(`/api/reports/daily?date=${selectedDate}`);
+      setReport(data);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -52,7 +68,7 @@ const Dashboard = ({ user, onLogout }) => {
           <input
             type="date"
             value={selectedDate}
-            max={new Date().toISOString().split("T")[0]}
+            max={getLocalDate()}
             onChange={(e) => setSelectedDate(e.target.value)}
           />
         </div>
@@ -88,6 +104,12 @@ const Dashboard = ({ user, onLogout }) => {
             </div>
           </div>
         )}
+        <ReadingForm selectedDate={selectedDate} onSuccess={refreshReport} />
+        <ReadingList
+          readings={report?.readings || []}
+          onRefresh={refreshReport}
+        />
+        <Reports selectedDate={selectedDate} />
       </section>
     </div>
   );

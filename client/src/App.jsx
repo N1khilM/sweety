@@ -4,11 +4,19 @@ import Dashboard from "./pages/Dashboard";
 import "./index.css";
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("user")) || null;
+    } catch {
+      return null;
+    }
+  });
   const [mode, setMode] = useState("login");
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
     setUser(null);
     setMode("login");
   };

@@ -30,6 +30,7 @@ const AuthForm = ({ mode, onSuccess, onSwitch }) => {
         body: JSON.stringify(form),
       });
 
+      localStorage.setItem("user", JSON.stringify(data.user));
       localStorage.setItem("token", data.token);
       onSuccess(data.user);
     } catch (err) {
